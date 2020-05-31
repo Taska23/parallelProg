@@ -8,7 +8,7 @@
 
 Вычисление с помощью одного потока, java-core
 
-#s rc.piCalc.multiThread 
+# src.piCalc.multiThread 
 
 Вычисление с помощью многопоточности, java-core
 
