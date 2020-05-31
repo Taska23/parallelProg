@@ -4,6 +4,10 @@
 
 Вычисление числа ПИ с помощью технологий MPI(mpj express) и openmp(omp4j)
 
+# src.piCalc.calcComparator
+
+Замер времени выполнения всех 4 вариантов вычислений
+
 # src.piCalc.singleThread 
 
 Вычисление с помощью одного потока, java-core
