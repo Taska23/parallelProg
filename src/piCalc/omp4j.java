@@ -1,10 +1,10 @@
 package piCalc;
 
 public class omp4j {
-    public static void main(String[] args) {
+    public static double calc(int n) {
 
 
-        int n = 10_000_000;
+
         int i;
         double w, x, sum, pi;
 
@@ -18,7 +18,10 @@ public class omp4j {
             sum = sum + f(x);
         }
         pi = w * sum;
+        /*
         System.out.println("Computed Pi: " + pi);
+        */
+        return pi;
     }
 
     /* function to integrate */

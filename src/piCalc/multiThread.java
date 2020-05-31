@@ -6,8 +6,8 @@ public class multiThread {
 
     public static volatile boolean running = true;
 
-    public static void main(String ... args) throws InterruptedException {
-        int threadCount = 4;
+    public static double calc(int n) throws InterruptedException {
+        int threadCount = 8;
         long timeoutMs = 5_000;
         final AtomicLong counter = new AtomicLong(0);
         PiThread[] threads = new PiThread[threadCount];
@@ -27,8 +27,9 @@ public class multiThread {
         for (int i = 0; i < threadCount; i++) {
             sum += threads[i].getSum();
         }
-        System.out.print("counter = " + counter.get());
-        System.out.print("PI = " + 4*sum);
+        //System.out.print("counter = " + counter.get());
+        //System.out.print("PI = " + 4*sum);
+        return sum*4;
 
     }
 

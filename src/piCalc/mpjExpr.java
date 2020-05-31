@@ -53,5 +53,7 @@ public class mpjExpr {
 
         MPI.Finalize();
     }
+    public void calc(int n){
 
+    }
 }
