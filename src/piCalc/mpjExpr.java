@@ -7,6 +7,11 @@ import mpi.*;
 public class mpjExpr {
 
     public static void main(String[] args) {
+
+        long start;
+        long finish;
+        long timeConsumedMillis;
+
         final double INTERVALS=10_000_000l;
 
         int rank, size;
@@ -15,6 +20,7 @@ public class mpjExpr {
         int totalCirclePoint[]=new int[1];
 
         double pi=0.0,  x, y;
+        start = System.currentTimeMillis();
 
         MPI.Init(args);
         rank=MPI.COMM_WORLD.Rank();
@@ -49,6 +55,9 @@ public class mpjExpr {
         }
 
         MPI.Finalize();
+        finish = System.currentTimeMillis();
+        timeConsumedMillis = finish - start;
+        System.out.println(timeConsumedMillis + " ms");
     }
 
 }
