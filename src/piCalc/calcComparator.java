@@ -11,19 +11,17 @@ public class calcComparator {
 
         System.out.println("Starting single - thread java core Pi calculating");
         start = System.currentTimeMillis();
-        System.out.println(singleThread.calc(n));
+        System.out.println(singleThread.computePI(n));
         finish = System.currentTimeMillis();
         timeConsumedMillis = finish - start;
         System.out.println("finished, time consumed: " + timeConsumedMillis + " ms");
 
 
         System.out.println("Starting multi - thread java core Pi calculating");
+        PiMonteCarlo PiVal = new PiMonteCarlo(10000000);
         start = System.currentTimeMillis();
-        try {
-            System.out.println(multiThread.calc(n));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        double value = PiVal.getPi();
+        System.out.println(value);
         finish = System.currentTimeMillis();
         timeConsumedMillis = finish - start;
         System.out.println("finished, time consumed: " + timeConsumedMillis + " ms");
@@ -31,7 +29,7 @@ public class calcComparator {
 
         System.out.println("Starting multithread MPI (mpj express) Pi calculating");
         start = System.currentTimeMillis();
-        System.out.println(singleThread.calc(n));
+        System.out.println(singleThread.computePI(n));
         finish = System.currentTimeMillis();
         timeConsumedMillis = finish - start;
         System.out.println("finished, time consumed: " + timeConsumedMillis + " ms");
@@ -39,7 +37,7 @@ public class calcComparator {
 
         System.out.println("Starting multithread openmp (omp4j) Pi calculating");
         start = System.currentTimeMillis();
-        System.out.println(omp4j.calc(n));
+        //System.out.println(omp4j.calc(n));
         finish = System.currentTimeMillis();
         timeConsumedMillis = finish - start;
         System.out.println("finished, time consumed: " + timeConsumedMillis + " ms");

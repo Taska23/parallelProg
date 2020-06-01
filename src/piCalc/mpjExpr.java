@@ -42,10 +42,7 @@ public class mpjExpr {
         if (rank==0)
         {
 
-            /** by using formula;
-             *
-             * Pi = 4 * (number of points generated inside the circle / number of points generated inside the square)
-             */
+
             pi=4 * (totalCirclePoint[0] / INTERVALS); // INTERVALS = number of points generated inside the square
 
             System.out.println("np= "+size+"\t PI= "+pi);
@@ -53,7 +50,5 @@ public class mpjExpr {
 
         MPI.Finalize();
     }
-    public void calc(int n){
 
-    }
 }

@@ -1,63 +1,50 @@
 package piCalc;
 
-import java.util.concurrent.atomic.AtomicLong;
-
-public class multiThread {
-
-    public static volatile boolean running = true;
-
-    public static double calc(int n) throws InterruptedException {
-        int threadCount = 8;
-        long timeoutMs = 5_000;
-        final AtomicLong counter = new AtomicLong(0);
-        PiThread[] threads = new PiThread[threadCount];
-        for (int i = 0; i < threadCount; i++) {
-            threads[i] = new PiThread(counter);
-            threads[i].start();
-        }
-
-        Thread.sleep(timeoutMs);
-        running = false;
-
-        for (int i = 0; i < threadCount; i++) {
-            threads[i].join();
-        }
-
-        double sum = 0;
-        for (int i = 0; i < threadCount; i++) {
-            sum += threads[i].getSum();
-        }
-        //System.out.print("counter = " + counter.get());
-        //System.out.print("PI = " + 4*sum);
-        return sum*4;
-
-    }
-
-    static class PiThread extends Thread {
-
-        private AtomicLong counter;
-        private double sum  = 0;
-
-        public PiThread(AtomicLong counter) {
-            this.counter = counter;
-        }
-
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+class PiMonteCarlo {
+    AtomicInteger nAtomSuccess;
+    int nThrows;
+    double value;
+    class MonteCarlo implements Runnable {
         @Override
         public void run() {
-            long i;
-            while (running && isValidCounter(i = counter.getAndAdd(1))) {
-                sum += Math.pow(-1, i) / (2 * i + 1);
-            }
-        }
-
-        private boolean isValidCounter(long value) {
-            return value >= 0 && value < Long.MAX_VALUE;
-        }
-
-        public double getSum() {
-            return sum;
+            double x = Math.random();
+            double y = Math.random();
+            if (x * x + y * y <= 1)
+                nAtomSuccess.incrementAndGet();
         }
     }
-
+    public PiMonteCarlo(int i) {
+        this.nAtomSuccess = new AtomicInteger(0);
+        this.nThrows = i;
+        this.value = 0;
+    }
+    public double getPi() {
+        int nProcessors = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newWorkStealingPool(nProcessors);
+        for (int i = 1; i <= nThrows; i++) {
+            Runnable worker = new MonteCarlo();
+            executor.execute(worker);
+        }
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+        }
+        value = 4.0 * nAtomSuccess.get() / nThrows;
+        return value;
+    }
+}
+public class multiThread {
+    public static void main(String[] args) {
+        PiMonteCarlo PiVal = new PiMonteCarlo(10000000);
+        long startTime = System.currentTimeMillis();
+        double value = PiVal.getPi();
+        long stopTime = System.currentTimeMillis();
+        System.out.println("Approx value:" + value);
+        System.out.println("Difference to exact value of pi: " + (value - Math.PI));
+        System.out.println("Error: " + (value - Math.PI) / Math.PI * 100 + " %");
+        System.out.println("Available processors: " + Runtime.getRuntime().availableProcessors());
+        System.out.println("Time Duration: " + (stopTime - startTime) + "ms");
+    }
 }
